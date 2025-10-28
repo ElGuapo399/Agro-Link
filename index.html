@@ -75,6 +75,17 @@
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
         
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
         /* Estilos para el header */
         header {
             background: white;
@@ -405,6 +416,101 @@
             margin-bottom: 15px;
             color: #ddd;
         }
+        
+        /* Estilos para modales */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .modal-title {
+            font-size: 1.5rem;
+            color: #2c5e1a;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+        }
+        
+        /* Estilos para formularios de autenticación */
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+        
+        /* Estilos para el panel de productor */
+        .producer-panel {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .producer-info {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .product-form-section {
+            margin-bottom: 30px;
+        }
+        
+        .product-form-section h3 {
+            margin-bottom: 15px;
+            color: #2c5e1a;
+        }
+        
+        .product-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -424,8 +530,8 @@
                     </ul>
                 </nav>
                 <div class="auth-buttons">
-                    <button class="btn btn-outline">Iniciar Sesión</button>
-                    <button class="btn btn-primary">Registrarse</button>
+                    <button class="btn btn-outline" id="login-btn">Iniciar Sesión</button>
+                    <button class="btn btn-primary" id="register-btn">Registrarse</button>
                 </div>
             </div>
         </div>
@@ -519,83 +625,103 @@
 
         <section id="producer" class="section hidden">
             <div class="container">
-                <h2 class="section-title">Registra Tus Productos Agrícolas</h2>
+                <h2 class="section-title">Panel del Productor</h2>
                 
-                <div class="producer-section">
-                    <form class="producer-form" id="product-form">
-                        <div class="form-group">
-                            <label for="producer-name">Nombre del Productor</label>
-                            <input type="text" id="producer-name" placeholder="Tu nombre o nombre de la empresa" required>
+                <div class="producer-panel">
+                    <div class="producer-info">
+                        <h3>Información del Productor</h3>
+                        <form class="producer-form" id="producer-info-form">
+                            <div class="form-group">
+                                <label for="producer-name">Nombre del Productor</label>
+                                <input type="text" id="producer-name" placeholder="Tu nombre o nombre de la empresa" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="producer-email">Correo Electrónico</label>
+                                <input type="email" id="producer-email" placeholder="ejemplo@correo.com" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="producer-phone">Teléfono de Contacto</label>
+                                <input type="tel" id="producer-phone" placeholder="(834) 123-4567" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="producer-location">Ubicación</label>
+                                <select id="producer-location" required>
+                                    <option value="">Selecciona tu municipio</option>
+                                    <option value="ciudad-victoria">Ciudad Victoria</option>
+                                    <option value="reynosa">Reynosa</option>
+                                    <option value="matamoros">Matamoros</option>
+                                    <option value="nuevo-laredo">Nuevo Laredo</option>
+                                    <option value="tampico">Tampico</option>
+                                    <option value="mante">El Mante</option>
+                                    <option value="mante">Aldama</option>
+                                    <option value="mante">Gomez Farias</option>
+                                    <option value="mante">Rio Bravo</option>
+                                    <option value="mante">San Fernando</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group form-full-width">
+                                <label for="producer-address">Dirección Específica (opcional)</label>
+                                <input type="text" id="producer-address" placeholder="Calle, número, colonia...">
+                            </div>
+                            
+                            <div class="form-group form-full-width">
+                                <button type="submit" class="btn btn-primary">Guardar Información</button>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <div class="product-form-section">
+                        <h3>Agregar Nuevo Producto</h3>
+                        <div class="success-message" id="success-message">
+                            ¡Producto agregado exitosamente!
                         </div>
-                        
-                        <div class="form-group">
-                            <label for="producer-email">Correo Electrónico</label>
-                            <input type="email" id="producer-email" placeholder="ejemplo@correo.com" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="producer-phone">Teléfono de Contacto</label>
-                            <input type="tel" id="producer-phone" placeholder="(834) 123-4567" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="producer-location">Ubicación</label>
-                            <select id="producer-location" required>
-                                <option value="">Selecciona tu municipio</option>
-                                <option value="ciudad-victoria">Ciudad Victoria</option>
-                                <option value="reynosa">Reynosa</option>
-                                <option value="matamoros">Matamoros</option>
-                                <option value="nuevo-laredo">Nuevo Laredo</option>
-                                <option value="tampico">Tampico</option>
-                                <option value="mante">El Mante</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group form-full-width">
-                            <label for="producer-address">Dirección Específica (opcional)</label>
-                            <input type="text" id="producer-address" placeholder="Calle, número, colonia...">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="product-name">Nombre del Producto</label>
-                            <input type="text" id="product-name" placeholder="Ej. Tomate, Maíz, Aguacate..." required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="product-category">Categoría</label>
-                            <select id="product-category" required>
-                                <option value="">Selecciona una categoría</option>
-                                <option value="frutas">Frutas</option>
-                                <option value="verduras">Verduras</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="product-price">Precio por Unidad</label>
-                            <input type="text" id="product-price" placeholder="$00.00" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="product-unit">Unidad de Medida</label>
-                            <select id="product-unit" required>
-                                <option value="kg">Kilogramo (kg)</option>
-                                <option value="g">Gramo (g)</option>
-                                <option value="lb">Libra (lb)</option>
-                                <option value="pieza">Pieza</option>
-                                <option value="caja">Caja</option>
-                                <option value="saco">Saco</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group form-full-width">
-                            <label for="product-description">Descripción del Producto</label>
-                            <textarea id="product-description" placeholder="Describe tu producto, métodos de cultivo, disponibilidad, etc." required></textarea>
-                        </div>
-                        
-                        <div class="form-group form-full-width">
-                            <button type="submit" class="btn btn-primary">Registrar Producto</button>
-                        </div>
-                    </form>
+                        <form class="producer-form" id="product-form">
+                            <div class="form-group">
+                                <label for="product-name">Nombre del Producto</label>
+                                <input type="text" id="product-name" placeholder="Ej. Tomate, Maíz, Aguacate..." required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="product-category">Categoría</label>
+                                <select id="product-category" required>
+                                    <option value="">Selecciona una categoría</option>
+                                    <option value="frutas">Frutas</option>
+                                    <option value="verduras">Verduras</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="product-price">Precio por Unidad</label>
+                                <input type="text" id="product-price" placeholder="$00.00" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="product-unit">Unidad de Medida</label>
+                                <select id="product-unit" required>
+                                    <option value="kg">Kilogramo (kg)</option>
+                                    <option value="g">Gramo (g)</option>
+                                    <option value="lb">Libra (lb)</option>
+                                    <option value="pieza">Pieza</option>
+                                    <option value="caja">Caja</option>
+                                    <option value="saco">Saco</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group form-full-width">
+                                <label for="product-description">Descripción del Producto</label>
+                                <textarea id="product-description" placeholder="Describe tu producto, métodos de cultivo, disponibilidad, etc." required></textarea>
+                            </div>
+                            
+                            <div class="product-actions">
+                                <button type="submit" class="btn btn-primary">Agregar Producto</button>
+                                <button type="button" class="btn btn-secondary" id="clear-product-form">Limpiar Formulario</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </section>
@@ -651,75 +777,203 @@
                 </div>
             </div>
             <div class="copyright">
-                &copy; 2023 AgroLink Tamaulipas. Todos los derechos reservados.
+                &copy; 2025 AgroLink Tamaulipas. Todos los derechos reservados.
             </div>
         </div>
     </footer>
 
+    <!-- Modal de Registro -->
+    <div class="modal" id="register-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Crear Cuenta</h2>
+                <button class="close-btn" id="close-register">&times;</button>
+            </div>
+            <form class="auth-form" id="register-form">
+                <div class="form-group">
+                    <label for="register-name">Nombre Completo</label>
+                    <input type="text" id="register-name" placeholder="Tu nombre completo" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-email">Correo Electrónico</label>
+                    <input type="email" id="register-email" placeholder="ejemplo@correo.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-password">Contraseña</label>
+                    <input type="password" id="register-password" placeholder="Mínimo 8 caracteres" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-confirm">Confirmar Contraseña</label>
+                    <input type="password" id="register-confirm" placeholder="Repite tu contraseña" required>
+                </div>
+                <div class="form-group">
+                    <label for="user-type">Tipo de Usuario</label>
+                    <select id="user-type" required>
+                        <option value="">Selecciona un tipo</option>
+                        <option value="comprador">Comprador</option>
+                        <option value="productor">Productor</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-outline" id="cancel-register">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Registrarse</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de Inicio de Sesión -->
+    <div class="modal" id="login-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Iniciar Sesión</h2>
+                <button class="close-btn" id="close-login">&times;</button>
+            </div>
+            <form class="auth-form" id="login-form">
+                <div class="form-group">
+                    <label for="login-email">Correo Electrónico</label>
+                    <input type="email" id="login-email" placeholder="ejemplo@correo.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Contraseña</label>
+                    <input type="password" id="login-password" placeholder="Tu contraseña" required>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-outline" id="cancel-login">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script>
-        // Base de datos de productos - VERSIÓN CON IMÁGENES LOCALES
-const productos = [
-    {
-        id: 1,
-        nombre: "Tomate Rojo",
-        categoria: "verduras",
-        agricultor: "Juan Pérez",
-        ubicacion: "Ciudad Victoria",
-        precio: "$25/kg",
-        descripcion: "Tomate rojo cultivado de manera orgánica, disponible para entrega inmediata.",
-        imagen: "Tomate.jpg"
-    },
-    {
-        id: 2,
-        nombre: "Aguacate Hass",
-        categoria: "frutas",
-        agricultor: "María González",
-        ubicacion: "Güémez",
-        precio: "$80/kg",
-        descripcion: "Aguacate Hass de primera calidad, cosechado esta semana.",
-        imagen: "Aguacate.jpeg"
-    },
-    {
-        id: 3,
-        nombre: "Cebolla Blanca",
-        categoria: "verduras",
-        agricultor: "Jose Perez",
-        ubicacion: "Gonzales",
-        precio: "$23/kg",
-        descripcion: "Cebolla blanca recién cosechada, disponible en grandes cantidades.",
-        imagen: "Cebolla.jpg"
-    },
-    {
-        id: 4,
-        nombre: "Chile Serrano",
-        categoria: "verduras",
-        agricultor: "Ana Rodríguez",
-        ubicacion: "Matamoros",
-        precio: "$35/kg",
-        descripcion: "Chile serrano fresco, ideal para salsas y guisos.",
-        imagen: "Chile.jpg"
-    },
-    {
-        id: 5,
-        nombre: "Naranja Navel",
-        categoria: "frutas",
-        agricultor: "Carlos Mendoza",
-        ubicacion: "Tampico",
-        precio: "$18/kg",
-        descripcion: "Naranjas dulces y jugosas, recién cosechadas.",
-        imagen: "Naranja.jpg"
-    },
-    {
-        id: 6,
-        nombre: "Limón Italiano",
-        categoria: "frutas",
-        agricultor: "Roberto Sánchez",
-        ubicacion: "Reynosa",
-        precio: "$15/kg",
-        descripcion: "Limón persa recién cosechado, ideal para bebidas y cocina.",
-        imagen: "Limon.jpeg"
-    }
-];
+        // Base de datos de productos
+        const productos = [
+            {
+                id: 1,
+                nombre: "Tomate Rojo",
+                categoria: "verduras",
+                agricultor: "Juan Pérez",
+                ubicacion: "Ciudad Victoria",
+                precio: "$25/kg",
+                descripcion: "Tomate rojo cultivado de manera orgánica, disponible para entrega inmediata.",
+                imagen: "Tomate.jpg"
+            },
+            {
+                id: 2,
+                nombre: "Aguacate Hass",
+                categoria: "frutas",
+                agricultor: "María González",
+                ubicacion: "Güémez",
+                precio: "$80/kg",
+                descripcion: "Aguacate Hass de primera calidad, cosechado esta semana.",
+                imagen: "Aguacate.jpeg"
+            },
+            {
+                id: 3,
+                nombre: "Cebolla Blanca",
+                categoria: "verduras",
+                agricultor: "Jose Perez",
+                ubicacion: "Gonzales",
+                precio: "$23/kg",
+                descripcion: "Cebolla blanca recién cosechada, disponible en grandes cantidades.",
+                imagen: "Cebolla.jpg"
+            },
+            {
+                id: 4,
+                nombre: "Chile Serrano",
+                categoria: "verduras",
+                agricultor: "Ana Rodríguez",
+                ubicacion: "Matamoros",
+                precio: "$35/kg",
+                descripcion: "Chile serrano fresco, ideal para salsas y guisos.",
+                imagen: "Chile.jpg"
+            },
+            {
+                id: 5,
+                nombre: "Naranja Navel",
+                categoria: "frutas",
+                agricultor: "Carlos Mendoza",
+                ubicacion: "Tampico",
+                precio: "$18/kg",
+                descripcion: "Naranjas dulces y jugosas, recién cosechadas.",
+                imagen: "Naranja.jpg"
+            },
+            {
+                id: 6,
+                nombre: "Limón Italiano",
+                categoria: "frutas",
+                agricultor: "Roberto Sánchez",
+                ubicacion: "Reynosa",
+                precio: "$15/kg",
+                descripcion: "Limón persa recién cosechado, ideal para bebidas y cocina.",
+                imagen: "Limon.jpeg"
+            },
+            {
+                id: 7,
+                nombre: "Mango",
+                categoria: "frutas",
+                agricultor: "Fernando López",
+                ubicacion: "Gomez Farias",
+                precio: "$45/kg",
+                descripcion: "Mango ataulfo dulce y jugoso, cosechado en su punto óptimo de maduración.",
+                imagen: "Mango.jpg"
+            },
+            {
+                id: 8,
+                nombre: "Cebolla Amarilla",
+                categoria: "verduras",
+                agricultor: "Miguel Ángel Ruiz",
+                ubicacion: "Padilla",
+                precio: "$28/kg",
+                descripcion: "Cebolla amarilla de sabor suave, ideal para guisos y ensaladas.",
+                imagen: "Cebolla-amarilla.jpg"
+            },
+            {
+                id: 9,
+                nombre: "Nopal",
+                categoria: "verduras",
+                agricultor: "Sofia Hernández",
+                ubicacion: "Jaumave",
+                precio: "$18/kg",
+                descripcion: "Nopal fresco sin espinas, listo para cocinar. Rico en fibra y nutrientes.",
+                imagen: "Nopal.jpg"
+            },
+            {
+                id: 10,
+                nombre: "Sandía",
+                categoria: "frutas",
+                agricultor: "Ricardo Torres",
+                ubicacion: "Soto la Marina",
+                precio: "$12/kg",
+                descripcion: "Sandía dulce y refrescante, perfecta para el clima cálido de Tamaulipas.",
+                imagen: "Sandia.jpg"
+            },
+            {
+                id: 11,
+                nombre: "Calabacita",
+                categoria: "verduras",
+                agricultor: "Laura Martínez",
+                ubicacion: "Xicoténcatl",
+                precio: "$22/kg",
+                descripcion: "Calabacita tierna recién cosechada, ideal para guisados y sopas.",
+                imagen: "Calabacita.jpg"
+            },
+            {
+                id: 12,
+                nombre: "Pitahaya",
+                categoria: "frutas",
+                agricultor: "Javier Ramírez",
+                ubicacion: "Jaumave",
+                precio: "$95/kg",
+                descripcion: "Pitahaya o fruta del dragón, exótica y nutritiva con alto contenido de antioxidantes.",
+                imagen: "Pitahaya.jpg"
+            }
+        ];
+
+        // Variables para el estado de la aplicación
+        let currentProducer = null;
+        let producerProducts = [];
 
         // Función para mostrar productos según la categoría seleccionada
         function mostrarProductos(categoria = "todas") {
@@ -783,6 +1037,25 @@ const productos = [
             if (seccionId === 'search') {
                 mostrarProductos();
             }
+        }
+
+        // Función para mostrar modal
+        function mostrarModal(modalId) {
+            document.getElementById(modalId).style.display = 'flex';
+        }
+
+        // Función para ocultar modal
+        function ocultarModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // Función para mostrar mensaje de éxito
+        function mostrarMensajeExito() {
+            const mensaje = document.getElementById('success-message');
+            mensaje.style.display = 'block';
+            setTimeout(() => {
+                mensaje.style.display = 'none';
+            }, 3000);
         }
 
         // Inicializar cuando el DOM esté cargado
@@ -863,11 +1136,111 @@ const productos = [
                 }
             });
             
-            // Configurar formulario de productor
+            // Configurar formulario de información del productor
+            document.getElementById('producer-info-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                currentProducer = {
+                    name: document.getElementById('producer-name').value,
+                    email: document.getElementById('producer-email').value,
+                    phone: document.getElementById('producer-phone').value,
+                    location: document.getElementById('producer-location').value,
+                    address: document.getElementById('producer-address').value
+                };
+                alert('Información del productor guardada exitosamente.');
+            });
+            
+            // Configurar formulario de producto
             document.getElementById('product-form').addEventListener('submit', function(e) {
                 e.preventDefault();
-                alert('¡Producto registrado exitosamente! Nos pondremos en contacto contigo pronto.');
-                this.reset();
+                
+                if (!currentProducer) {
+                    alert('Por favor, primero completa tu información como productor.');
+                    return;
+                }
+                
+                const nuevoProducto = {
+                    id: productos.length + 1,
+                    nombre: document.getElementById('product-name').value,
+                    categoria: document.getElementById('product-category').value,
+                    agricultor: currentProducer.name,
+                    ubicacion: currentProducer.location,
+                    precio: document.getElementById('product-price').value,
+                    descripcion: document.getElementById('product-description').value,
+                    imagen: "default-product.jpg" // Imagen por defecto
+                };
+                
+                // Agregar el producto a la lista
+                productos.push(nuevoProducto);
+                producerProducts.push(nuevoProducto);
+                
+                // Mostrar mensaje de éxito
+                mostrarMensajeExito();
+                
+                // Limpiar solo el formulario de producto, no la información del productor
+                document.getElementById('product-name').value = '';
+                document.getElementById('product-category').value = '';
+                document.getElementById('product-price').value = '';
+                document.getElementById('product-unit').value = 'kg';
+                document.getElementById('product-description').value = '';
+            });
+            
+            // Configurar botón para limpiar formulario de producto
+            document.getElementById('clear-product-form').addEventListener('click', function() {
+                document.getElementById('product-name').value = '';
+                document.getElementById('product-category').value = '';
+                document.getElementById('product-price').value = '';
+                document.getElementById('product-unit').value = 'kg';
+                document.getElementById('product-description').value = '';
+            });
+            
+            // Configurar botones de autenticación
+            document.getElementById('register-btn').addEventListener('click', function() {
+                mostrarModal('register-modal');
+            });
+            
+            document.getElementById('login-btn').addEventListener('click', function() {
+                mostrarModal('login-modal');
+            });
+            
+            // Configurar cierre de modales
+            document.getElementById('close-register').addEventListener('click', function() {
+                ocultarModal('register-modal');
+            });
+            
+            document.getElementById('close-login').addEventListener('click', function() {
+                ocultarModal('login-modal');
+            });
+            
+            document.getElementById('cancel-register').addEventListener('click', function() {
+                ocultarModal('register-modal');
+            });
+            
+            document.getElementById('cancel-login').addEventListener('click', function() {
+                ocultarModal('login-modal');
+            });
+            
+            // Configurar formulario de registro
+            document.getElementById('register-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const password = document.getElementById('register-password').value;
+                const confirmPassword = document.getElementById('register-confirm').value;
+                
+                if (password !== confirmPassword) {
+                    alert('Las contraseñas no coinciden.');
+                    return;
+                }
+                
+                alert('¡Registro exitoso! Ahora puedes iniciar sesión.');
+                ocultarModal('register-modal');
+                document.getElementById('register-form').reset();
+            });
+            
+            // Configurar formulario de inicio de sesión
+            document.getElementById('login-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('Inicio de sesión exitoso.');
+                ocultarModal('login-modal');
+                document.getElementById('login-form').reset();
             });
             
             // Mostrar la sección inicial
