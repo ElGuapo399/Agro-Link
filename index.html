@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgroLink Tamaulipas - Conectando productores y compradores</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Estilos generales */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .section {
+            padding: 60px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #2c5e1a;
+            font-size: 2.2rem;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+        
+        .btn-primary {
+            background: #4CAF50;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #4CAF50;
+            color: #4CAF50;
+        }
+        
+        .btn-outline:hover {
+            background: #4CAF50;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        /* Estilos para el header */
+        header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo img {
+            height: 50px;
+            border-radius: 8px;
+        }
+        
+        .logo h1 {
+            color: #2c5e1a;
+            font-size: 1.8rem;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+        
+        nav a {
+            text-decoration: none;
+            color: #333;
+            padding: 8px 15px;
+            border-radius: 4px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        nav a:hover, nav a.active {
+            background: #4CAF50;
+            color: white;
+        }
+        
+        .auth-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        /* Estilos para el hero */
+        .hero {
+            background: linear-gradient(rgba(44, 94, 26, 0.8), rgba(44, 94, 26, 0.8)), url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1932&q=80');
+            background-size: cover;
+            background-position: center;
+            padding: 100px 0;
+            text-align: center;
+            color: white;
+        }
+        
+        .hero h2 {
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+        
+        .hero .auth-buttons {
+            justify-content: center;
+        }
+        
+        /* Estilos para las características */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .feature-card {
+            text-align: center;
+            padding: 30px 20px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            background: white;
+            transition: transform 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .feature-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+        
+        .feature-card h3 {
+            margin-bottom: 15px;
+            color: #2c5e1a;
+        }
+        
+        /* Estilos para el formulario de búsqueda */
+        .search-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-group label {
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #2c5e1a;
+        }
+        
+        input, select {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        /* Filtros por categoría */
+        .category-filter {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .category-btn {
+            padding: 10px 20px;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        
+        .category-btn:hover {
+            background: #f5f5f5;
+        }
+        
+        .category-btn.active {
+            background: #4CAF50;
+            color: white;
+            border-color: #4CAF50;
+        }
+        
+        /* Estilos para productos */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+        
+        .product-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s;
+            background: white;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .product-image {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .product-info {
+            padding: 20px;
+        }
+        
+        .product-info h3 {
+            margin-bottom: 10px;
+            color: #2c5e1a;
+        }
+        
+        .product-meta {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        .product-price {
+            font-weight: bold;
+            color: #4CAF50;
+            font-size: 1.3em;
+            margin: 10px 0;
+        }
+        
+        /* Estilos para el formulario de productor */
+        .producer-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .form-full-width {
+            grid-column: 1 / -1;
+        }
+        
+        textarea {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        /* Estilos para el footer */
+        footer {
+            background: #2c3e50;
+            color: white;
+            padding: 50px 0 20px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-column h3 {
+            margin-bottom: 20px;
+            color: #4CAF50;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column a {
+            color: #ddd;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-column a:hover {
+            color: #4CAF50;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #555;
+            color: #bbb;
+        }
+        
+        /* Estilos responsivos */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .hero h2 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+        }
+        
+        /* Estilos para mensajes de estado */
+        .no-products {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            color: #666;
+        }
+        
+        .no-products i {
+            font-size: 3em;
+            margin-bottom: 15px;
+            color: #ddd;
+        }
+        
+        /* Estilos para modales */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .modal-title {
+            font-size: 1.5rem;
+            color: #2c5e1a;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+        }
+        
+        /* Estilos para formularios de autenticación */
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+        
+        /* Estilos para el panel de productor */
+        .producer-panel {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .producer-info {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .product-form-section {
+            margin-bottom: 30px;
+        }
+        
+        .product-form-section h3 {
+            margin-bottom: 15px;
+            color: #2c5e1a;
+        }
+        
+        .product-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <img src="imagen (2).jpg" alt="AgroLink Logo">
+                    <h1>AgroLink Tamaulipas</h1>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#" class="active" data-section="home">Inicio</a></li>
+                        <li><a href="#" data-section="search">Buscar Productos</a></li>
+                        <li><a href="#" data-section="producer">Soy Productor</a></li>
+                        <li><a href="#" data-section="about">Acerca de</a></li>
+                    </ul>
+                </nav>
+                <div class="auth-buttons">
+                    <button class="btn btn-outline" id="login-btn">Iniciar Sesión</button>
+                    <button class="btn btn-primary" id="register-btn">Registrarse</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="home" class="section">
+            <div class="hero">
+                <div class="container">
+                    <h2>Conectando productores agrícolas con compradores en Tamaulipas</h2>
+                    <p>Encuentra productos frescos directamente de los agricultores locales o registra tus productos para llegar a más clientes.</p>
+                    <div class="auth-buttons">
+                        <button class="btn btn-primary" data-section="search">Buscar Productos</button>
+                        <button class="btn btn-outline" data-section="producer">Registrar Productos</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container">
+                <h2 class="section-title">¿Cómo funciona AgroLink?</h2>
+                <div class="features">
+                    <div class="feature-card">
+                        <div class="feature-icon">🌱</div>
+                        <h3>Para Productores</h3>
+                        <p>Registra tus productos agrícolas, especifica ubicación y métodos de contacto para que los compradores te encuentren fácilmente.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🛒</div>
+                        <h3>Para Compradores</h3>
+                        <p>Encuentra productos frescos directamente de agricultores locales. Filtra por ubicación, tipo de producto y más.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📍</div>
+                        <h3>Ubicación</h3>
+                        <p>Nuestra plataforma te ayuda a encontrar productores cercanos, reduciendo costos de transporte y apoyando la economía local.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="search" class="section hidden">
+            <div class="container">
+                <h2 class="section-title">Encuentra Productos Frescos</h2>
+                
+                <div class="search-section">
+                    <div class="search-form">
+                        <div class="form-group">
+                            <label for="product-search">¿Qué producto buscas?</label>
+                            <input type="text" id="product-search" placeholder="Ej. Tomate, Maíz, Aguacate...">
+                        </div>
+                        <div class="form-group">
+                            <label for="location">Ubicación</label>
+                            <select id="location">
+                                <option value="">Toda Tamaulipas</option>
+                                <option value="ciudad-victoria">Ciudad Victoria</option>
+                                <option value="reynosa">Reynosa</option>
+                                <option value="matamoros">Matamoros</option>
+                                <option value="nuevo-laredo">Nuevo Laredo</option>
+                                <option value="tampico">Tampico</option>
+                                <option value="mante">El Mante</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="category">Categoría</label>
+                            <select id="category">
+                                <option value="">Todas las categorías</option>
+                                <option value="frutas">Frutas</option>
+                                <option value="verduras">Verduras</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>&nbsp;</label>
+                            <button class="btn btn-primary" id="search-btn">Buscar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filtros por categoría -->
+                <div class="category-filter">
+                    <button class="category-btn active" data-category="todas">Todas</button>
+                    <button class="category-btn" data-category="frutas">Frutas</button>
+                    <button class="category-btn" data-category="verduras">Verduras</button>
+                </div>
+
+                <h3 class="section-title" style="margin-top: 40px;">Productos Disponibles</h3>
+                <div class="products-grid" id="products-container">
+                    <!-- Los productos se cargarán dinámicamente aquí -->
+                </div>
+            </div>
+        </section>
+
+        <section id="producer" class="section hidden">
+            <div class="container">
+                <h2 class="section-title">Panel del Productor</h2>
+                
+                <div class="producer-panel">
+                    <div class="producer-info">
+                        <h3>Información del Productor</h3>
+                        <form class="producer-form" id="producer-info-form">
+                            <div class="form-group">
+                                <label for="producer-name">Nombre del Productor</label>
+                                <input type="text" id="producer-name" placeholder="Tu nombre o nombre de la empresa" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="producer-email">Correo Electrónico</label>
+                                <input type="email" id="producer-email" placeholder="ejemplo@correo.com" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="producer-phone">Teléfono de Contacto</label>
+                                <input type="tel" id="producer-phone" placeholder="(834) 123-4567" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="producer-location">Ubicación</label>
+                                <select id="producer-location" required>
+                                    <option value="">Selecciona tu municipio</option>
+                                    <option value="ciudad-victoria">Ciudad Victoria</option>
+                                    <option value="reynosa">Reynosa</option>
+                                    <option value="matamoros">Matamoros</option>
+                                    <option value="nuevo-laredo">Nuevo Laredo</option>
+                                    <option value="tampico">Tampico</option>
+                                    <option value="mante">El Mante</option>
+                                    <option value="mante">Aldama</option>
+                                    <option value="mante">Gomez Farias</option>
+                                    <option value="mante">Rio Bravo</option>
+                                    <option value="mante">San Fernando</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group form-full-width">
+                                <label for="producer-address">Dirección Específica (opcional)</label>
+                                <input type="text" id="producer-address" placeholder="Calle, número, colonia...">
+                            </div>
+                            
+                            <div class="form-group form-full-width">
+                                <button type="submit" class="btn btn-primary">Guardar Información</button>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <div class="product-form-section">
+                        <h3>Agregar Nuevo Producto</h3>
+                        <div class="success-message" id="success-message">
+                            ¡Producto agregado exitosamente!
+                        </div>
+                        <form class="producer-form" id="product-form">
+                            <div class="form-group">
+                                <label for="product-name">Nombre del Producto</label>
+                                <input type="text" id="product-name" placeholder="Ej. Tomate, Maíz, Aguacate..." required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="product-category">Categoría</label>
+                                <select id="product-category" required>
+                                    <option value="">Selecciona una categoría</option>
+                                    <option value="frutas">Frutas</option>
+                                    <option value="verduras">Verduras</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="product-price">Precio por Unidad</label>
+                                <input type="text" id="product-price" placeholder="$00.00" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="product-unit">Unidad de Medida</label>
+                                <select id="product-unit" required>
+                                    <option value="kg">Kilogramo (kg)</option>
+                                    <option value="g">Gramo (g)</option>
+                                    <option value="lb">Libra (lb)</option>
+                                    <option value="pieza">Pieza</option>
+                                    <option value="caja">Caja</option>
+                                    <option value="saco">Saco</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group form-full-width">
+                                <label for="product-description">Descripción del Producto</label>
+                                <textarea id="product-description" placeholder="Describe tu producto, métodos de cultivo, disponibilidad, etc." required></textarea>
+                            </div>
+                            
+                            <div class="product-actions">
+                                <button type="submit" class="btn btn-primary">Agregar Producto</button>
+                                <button type="button" class="btn btn-secondary" id="clear-product-form">Limpiar Formulario</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="section hidden">
+            <div class="container">
+                <h2 class="section-title">Acerca de AgroLink Tamaulipas</h2>
+                <div class="producer-section">
+                    <p>AgroLink Tamaulipas es una plataforma diseñada para conectar directamente a los productores agrícolas del estado con compradores locales, incluyendo personas, tiendas, restaurantes y mercados.</p>
+                    
+                    <h3 style="margin: 30px 0 15px;">Nuestra Misión</h3>
+                    <p>Facilitar el acceso a productos agrícolas frescos y de calidad, promoviendo el comercio local y reduciendo los intermediarios en la cadena de suministro.</p>
+                    
+                    <h3 style="margin: 30px 0 15px;">Beneficios</h3>
+                    <ul style="margin-left: 20px; margin-bottom: 20px;">
+                        <li>Para productores: Mayor visibilidad y acceso a nuevos mercados</li>
+                        <li>Para compradores: Productos frescos directamente del campo</li>
+                        <li>Para la comunidad: Fortalecimiento de la economía local y reducción de la huella de carbono</li>
+                    </ul>
+                    
+                    <h3 style="margin: 30px 0 15px;">Contacto</h3>
+                    <p>Para más información, puedes contactarnos en:</p>
+                    <p>Email: info@agrolinktamaulipas.mx</p>
+                    <p>Teléfono: (834) 123-4567</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>AgroLink Tamaulipas</h3>
+                    <p>Conectando productores y compradores de productos agrícolas frescos en todo Tamaulipas.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Enlaces Rápidos</h3>
+                    <ul>
+                        <li><a href="#" data-section="home">Inicio</a></li>
+                        <li><a href="#" data-section="search">Buscar Productos</a></li>
+                        <li><a href="#" data-section="producer">Soy Productor</a></li>
+                        <li><a href="#" data-section="about">Acerca de</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contacto</h3>
+                    <ul>
+                        <li>Email: info@agrolinktamaulipas.mx</li>
+                        <li>Teléfono: (834) 123-4567</li>
+                        <li>Dirección: Ciudad Victoria, Tamaulipas</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2025 AgroLink Tamaulipas. Todos los derechos reservados.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal de Registro -->
+    <div class="modal" id="register-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Crear Cuenta</h2>
+                <button class="close-btn" id="close-register">&times;</button>
+            </div>
+            <form class="auth-form" id="register-form">
+                <div class="form-group">
+                    <label for="register-name">Nombre Completo</label>
+                    <input type="text" id="register-name" placeholder="Tu nombre completo" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-email">Correo Electrónico</label>
+                    <input type="email" id="register-email" placeholder="ejemplo@correo.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-password">Contraseña</label>
+                    <input type="password" id="register-password" placeholder="Mínimo 8 caracteres" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-confirm">Confirmar Contraseña</label>
+                    <input type="password" id="register-confirm" placeholder="Repite tu contraseña" required>
+                </div>
+                <div class="form-group">
+                    <label for="user-type">Tipo de Usuario</label>
+                    <select id="user-type" required>
+                        <option value="">Selecciona un tipo</option>
+                        <option value="comprador">Comprador</option>
+                        <option value="productor">Productor</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-outline" id="cancel-register">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Registrarse</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de Inicio de Sesión -->
+    <div class="modal" id="login-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Iniciar Sesión</h2>
+                <button class="close-btn" id="close-login">&times;</button>
+            </div>
+            <form class="auth-form" id="login-form">
+                <div class="form-group">
+                    <label for="login-email">Correo Electrónico</label>
+                    <input type="email" id="login-email" placeholder="ejemplo@correo.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Contraseña</label>
+                    <input type="password" id="login-password" placeholder="Tu contraseña" required>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-outline" id="cancel-login">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Base de datos de productos
+        const productos = [
+            {
+                id: 1,
+                nombre: "Tomate Rojo",
+                categoria: "verduras",
+                agricultor: "Juan Pérez",
+                ubicacion: "Ciudad Victoria",
+                precio: "$25/kg",
+                descripcion: "Tomate rojo cultivado de manera orgánica, disponible para entrega inmediata.",
+                imagen: "Tomate.jpg"
+            },
+            {
+                id: 2,
+                nombre: "Aguacate Hass",
+                categoria: "frutas",
+                agricultor: "María González",
+                ubicacion: "Güémez",
+                precio: "$80/kg",
+                descripcion: "Aguacate Hass de primera calidad, cosechado esta semana.",
+                imagen: "Aguacate.jpeg"
+            },
+            {
+                id: 3,
+                nombre: "Cebolla Blanca",
+                categoria: "verduras",
+                agricultor: "Jose Perez",
+                ubicacion: "Gonzales",
+                precio: "$23/kg",
+                descripcion: "Cebolla blanca recién cosechada, disponible en grandes cantidades.",
+                imagen: "Cebolla.jpg"
+            },
+            {
+                id: 4,
+                nombre: "Chile Serrano",
+                categoria: "verduras",
+                agricultor: "Ana Rodríguez",
+                ubicacion: "Matamoros",
+                precio: "$35/kg",
+                descripcion: "Chile serrano fresco, ideal para salsas y guisos.",
+                imagen: "Chile.jpg"
+            },
+            {
+                id: 5,
+                nombre: "Naranja Navel",
+                categoria: "frutas",
+                agricultor: "Carlos Mendoza",
+                ubicacion: "Tampico",
+                precio: "$18/kg",
+                descripcion: "Naranjas dulces y jugosas, recién cosechadas.",
+                imagen: "Naranja.jpg"
+            },
+            {
+                id: 6,
+                nombre: "Limón Italiano",
+                categoria: "frutas",
+                agricultor: "Roberto Sánchez",
+                ubicacion: "Reynosa",
+                precio: "$15/kg",
+                descripcion: "Limón persa recién cosechado, ideal para bebidas y cocina.",
+                imagen: "Limon.jpeg"
+            },
+            {
+                id: 7,
+                nombre: "Mango",
+                categoria: "frutas",
+                agricultor: "Fernando López",
+                ubicacion: "Gomez Farias",
+                precio: "$45/kg",
+                descripcion: "Mango ataulfo dulce y jugoso, cosechado en su punto óptimo de maduración.",
+                imagen: "Mango.jpg"
+            },
+            {
+                id: 8,
+                nombre: "Cebolla Amarilla",
+                categoria: "verduras",
+                agricultor: "Miguel Ángel Ruiz",
+                ubicacion: "Padilla",
+                precio: "$28/kg",
+                descripcion: "Cebolla amarilla de sabor suave, ideal para guisos y ensaladas.",
+                imagen: "Cebolla-amarilla.jpg"
+            },
+            {
+                id: 9,
+                nombre: "Nopal",
+                categoria: "verduras",
+                agricultor: "Sofia Hernández",
+                ubicacion: "Jaumave",
+                precio: "$18/kg",
+                descripcion: "Nopal fresco sin espinas, listo para cocinar. Rico en fibra y nutrientes.",
+                imagen: "Nopal.jpg"
+            },
+            {
+                id: 10,
+                nombre: "Sandía",
+                categoria: "frutas",
+                agricultor: "Ricardo Torres",
+                ubicacion: "Soto la Marina",
+                precio: "$12/kg",
+                descripcion: "Sandía dulce y refrescante, perfecta para el clima cálido de Tamaulipas.",
+                imagen: "Sandia.jpg"
+            },
+            {
+                id: 11,
+                nombre: "Calabacita",
+                categoria: "verduras",
+                agricultor: "Laura Martínez",
+                ubicacion: "Xicoténcatl",
+                precio: "$22/kg",
+                descripcion: "Calabacita tierna recién cosechada, ideal para guisados y sopas.",
+                imagen: "Calabacita.jpg"
+            },
+            {
+                id: 12,
+                nombre: "Pitahaya",
+                categoria: "frutas",
+                agricultor: "Javier Ramírez",
+                ubicacion: "Jaumave",
+                precio: "$95/kg",
+                descripcion: "Pitahaya o fruta del dragón, exótica y nutritiva con alto contenido de antioxidantes.",
+                imagen: "Pitahaya.jpg"
+            }
+        ];
+
+        // Variables para el estado de la aplicación
+        let currentProducer = null;
+        let producerProducts = [];
+
+        // Función para mostrar productos según la categoría seleccionada
+        function mostrarProductos(categoria = "todas") {
+            const container = document.getElementById('products-container');
+            container.innerHTML = '';
+            
+            const productosFiltrados = categoria === "todas" 
+                ? productos 
+                : productos.filter(producto => producto.categoria === categoria);
+            
+            if (productosFiltrados.length === 0) {
+                container.innerHTML = `
+                    <div class="no-products">
+                        <i class="fas fa-search"></i>
+                        <h3>No se encontraron productos</h3>
+                        <p>Intenta con otra categoría o término de búsqueda.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            productosFiltrados.forEach(producto => {
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card';
+                productCard.innerHTML = `
+                    <div class="product-image" style="background-image: url('${producto.imagen}');"></div>
+                    <div class="product-info">
+                        <h3>${producto.nombre}</h3>
+                        <div class="product-meta">
+                            <span>Agricultor: ${producto.agricultor}</span>
+                            <span>${producto.ubicacion}</span>
+                        </div>
+                        <div class="product-price">${producto.precio}</div>
+                        <p>${producto.descripcion}</p>
+                        <button class="btn btn-primary" style="width: 100%; margin-top: 15px;">Contactar Productor</button>
+                    </div>
+                `;
+                container.appendChild(productCard);
+            });
+        }
+
+        // Función para navegar entre secciones
+        function mostrarSeccion(seccionId) {
+            // Ocultar todas las secciones
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.add('hidden');
+            });
+            
+            // Mostrar la sección seleccionada
+            document.getElementById(seccionId).classList.remove('hidden');
+            
+            // Actualizar navegación activa
+            document.querySelectorAll('nav a').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('data-section') === seccionId) {
+                    link.classList.add('active');
+                }
+            });
+            
+            // Si es la sección de búsqueda, cargar productos
+            if (seccionId === 'search') {
+                mostrarProductos();
+            }
+        }
+
+        // Función para mostrar modal
+        function mostrarModal(modalId) {
+            document.getElementById(modalId).style.display = 'flex';
+        }
+
+        // Función para ocultar modal
+        function ocultarModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // Función para mostrar mensaje de éxito
+        function mostrarMensajeExito() {
+            const mensaje = document.getElementById('success-message');
+            mensaje.style.display = 'block';
+            setTimeout(() => {
+                mensaje.style.display = 'none';
+            }, 3000);
+        }
+
+        // Inicializar cuando el DOM esté cargado
+        document.addEventListener('DOMContentLoaded', function() {
+            // Configurar navegación
+            document.querySelectorAll('nav a, .auth-buttons button[data-section]').forEach(element => {
+                element.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const seccion = this.getAttribute('data-section');
+                    mostrarSeccion(seccion);
+                });
+            });
+            
+            // Configurar filtros de categoría
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Quitar clase active de todos los botones
+                    document.querySelectorAll('.category-btn').forEach(b => {
+                        b.classList.remove('active');
+                    });
+                    
+                    // Agregar clase active al botón clickeado
+                    this.classList.add('active');
+                    
+                    // Filtrar productos
+                    const categoria = this.getAttribute('data-category');
+                    mostrarProductos(categoria);
+                });
+            });
+            
+            // Configurar botón de búsqueda
+            document.getElementById('search-btn').addEventListener('click', function(e) {
+                e.preventDefault();
+                const termino = document.getElementById('product-search').value.toLowerCase();
+                const ubicacion = document.getElementById('location').value;
+                const categoria = document.getElementById('category').value;
+                
+                // Filtrar productos según los criterios
+                const productosFiltrados = productos.filter(producto => {
+                    const coincideNombre = !termino || producto.nombre.toLowerCase().includes(termino);
+                    const coincideUbicacion = !ubicacion || producto.ubicacion.toLowerCase().includes(ubicacion);
+                    const coincideCategoria = !categoria || producto.categoria === categoria;
+                    
+                    return coincideNombre && coincideUbicacion && coincideCategoria;
+                });
+                
+                // Mostrar productos filtrados
+                const container = document.getElementById('products-container');
+                container.innerHTML = '';
+                
+                if (productosFiltrados.length === 0) {
+                    container.innerHTML = `
+                        <div class="no-products">
+                            <i class="fas fa-search"></i>
+                            <h3>No se encontraron productos</h3>
+                            <p>Intenta con otros criterios de búsqueda.</p>
+                        </div>
+                    `;
+                } else {
+                    productosFiltrados.forEach(producto => {
+                        const productCard = document.createElement('div');
+                        productCard.className = 'product-card';
+                        productCard.innerHTML = `
+                            <div class="product-image" style="background-image: url('${producto.imagen}');"></div>
+                            <div class="product-info">
+                                <h3>${producto.nombre}</h3>
+                                <div class="product-meta">
+                                    <span>Agricultor: ${producto.agricultor}</span>
+                                    <span>${producto.ubicacion}</span>
+                                </div>
+                                <div class="product-price">${producto.precio}</div>
+                                <p>${producto.descripcion}</p>
+                                <button class="btn btn-primary" style="width: 100%; margin-top: 15px;">Contactar Productor</button>
+                            </div>
+                        `;
+                        container.appendChild(productCard);
+                    });
+                }
+            });
+            
+            // Configurar formulario de información del productor
+            document.getElementById('producer-info-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                currentProducer = {
+                    name: document.getElementById('producer-name').value,
+                    email: document.getElementById('producer-email').value,
+                    phone: document.getElementById('producer-phone').value,
+                    location: document.getElementById('producer-location').value,
+                    address: document.getElementById('producer-address').value
+                };
+                alert('Información del productor guardada exitosamente.');
+            });
+            
+            // Configurar formulario de producto
+            document.getElementById('product-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                if (!currentProducer) {
+                    alert('Por favor, primero completa tu información como productor.');
+                    return;
+                }
+                
+                const nuevoProducto = {
+                    id: productos.length + 1,
+                    nombre: document.getElementById('product-name').value,
+                    categoria: document.getElementById('product-category').value,
+                    agricultor: currentProducer.name,
+                    ubicacion: currentProducer.location,
+                    precio: document.getElementById('product-price').value,
+                    descripcion: document.getElementById('product-description').value,
+                    imagen: "default-product.jpg" // Imagen por defecto
+                };
+                
+                // Agregar el producto a la lista
+                productos.push(nuevoProducto);
+                producerProducts.push(nuevoProducto);
+                
+                // Mostrar mensaje de éxito
+                mostrarMensajeExito();
+                
+                // Limpiar solo el formulario de producto, no la información del productor
+                document.getElementById('product-name').value = '';
+                document.getElementById('product-category').value = '';
+                document.getElementById('product-price').value = '';
+                document.getElementById('product-unit').value = 'kg';
+                document.getElementById('product-description').value = '';
+            });
+            
+            // Configurar botón para limpiar formulario de producto
+            document.getElementById('clear-product-form').addEventListener('click', function() {
+                document.getElementById('product-name').value = '';
+                document.getElementById('product-category').value = '';
+                document.getElementById('product-price').value = '';
+                document.getElementById('product-unit').value = 'kg';
+                document.getElementById('product-description').value = '';
+            });
+            
+            // Configurar botones de autenticación
+            document.getElementById('register-btn').addEventListener('click', function() {
+                mostrarModal('register-modal');
+            });
+            
+            document.getElementById('login-btn').addEventListener('click', function() {
+                mostrarModal('login-modal');
+            });
+            
+            // Configurar cierre de modales
+            document.getElementById('close-register').addEventListener('click', function() {
+                ocultarModal('register-modal');
+            });
+            
+            document.getElementById('close-login').addEventListener('click', function() {
+                ocultarModal('login-modal');
+            });
+            
+            document.getElementById('cancel-register').addEventListener('click', function() {
+                ocultarModal('register-modal');
+            });
+            
+            document.getElementById('cancel-login').addEventListener('click', function() {
+                ocultarModal('login-modal');
+            });
+            
+            // Configurar formulario de registro
+            document.getElementById('register-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const password = document.getElementById('register-password').value;
+                const confirmPassword = document.getElementById('register-confirm').value;
+                
+                if (password !== confirmPassword) {
+                    alert('Las contraseñas no coinciden.');
+                    return;
+                }
+                
+                alert('¡Registro exitoso! Ahora puedes iniciar sesión.');
+                ocultarModal('register-modal');
+                document.getElementById('register-form').reset();
+            });
+            
+            // Configurar formulario de inicio de sesión
+            document.getElementById('login-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('Inicio de sesión exitoso.');
+                ocultarModal('login-modal');
+                document.getElementById('login-form').reset();
+            });
+            
+            // Mostrar la sección inicial
+            mostrarSeccion('home');
+        });
+    </script>
+</body>
+</html>
