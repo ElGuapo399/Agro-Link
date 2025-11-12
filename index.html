@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgroLink Tamaulipas - Conectando productores y compradores</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+ 
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="logo">
+                        <img src="Logo.jpg" alt="AgroLink Tamaulipas">
+                        <h1>AgroLink Tamaulipas</h1>
+                    </div>
+                    <a href="#" class="inicio-btn" data-section="home">Inicio</a>
+                </div>
+                <nav aria-label="Navegación principal">
+                    <ul>
+                        <li><a href="#" data-section="search">Buscar Productos</a></li>
+                        <li><a href="#" data-section="producer">Soy Productor</a></li>
+                        <li><a href="#" data-section="about">Acerca de</a></li>
+                    </ul>
+                </nav>
+                <div class="header-actions">
+                    <button class="btn btn-outline" id="login-btn">Iniciar Sesión</button>
+                    <button class="btn btn-primary" id="register-btn">Registrarse</button>
+                    <button class="cart-icon-btn" id="header-cart-btn">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count" id="cart-count">0</span>
+                    </button>
+                <!-- Modal para lista de compra / contactar productor -->
+                <div class="modal" id="cart-modal" aria-hidden="true">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 class="modal-title">Lista de Compra</h2>
+                        <button class="close-btn" id="close-cart" aria-label="Cerrar modal de carrito">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Columna izquierda: Productos -->
+                        <div class="cart-main-content">
+                            <!-- Controles de cantidad -->
+                            <div class="cart-section">
+                                <h3 style="color:var(--accent-color);margin-bottom:12px;">Agregar Producto</h3>                            <div style="display:flex;gap:12px;align-items:center;margin-bottom:20px;background:#f8f9fa;padding:16px;border-radius:8px;">
+                                <label for="cart-quantity" style="min-width:120px;font-weight:500;">Cantidad a solicitar</label>
+                                <input id="cart-quantity" type="number" min="1" value="1">
+                                <select id="cart-unit" style="padding:8px 12px;border-radius:6px;border:1px solid #ddd;flex:1;">
+                                    <option value="kg">Kilogramo (kg)</option>
+                                    <option value="ton">Tonelada</option>
+                                    <option value="saco">Saco</option>
+                                    <option value="lb">Libra (lb)</option>
+                                    <option value="caja">Caja</option>
+                                    <option value="pieza">Pieza</option>
+                                    <option value="g">Gramo (g)</option>
+                                </select>
+                                <button class="btn btn-primary" id="add-to-cart-btn">Agregar a mi lista</button>
+                            </div>
+ 
+                            <div class="cart-list-section">
+                                <div class="cart-list-header">
+                                    <h3 style="color:var(--accent-color);">Tu lista de productos</h3>
+                                    <div class="cart-total" id="cart-total"></div>
+                                </div>
+                                <div id="cart-contents"></div>
+                                <div class="cart-actions">
+                                    <button class="btn btn-outline" id="clear-cart">
+                                        <i class="fas fa-trash"></i> Limpiar lista
+                                    </button>
+                                    <div class="cart-total-section">
+                                        <span class="cart-total-label">Total estimado:</span>
+                                        <span class="cart-total-amount" id="cart-total-amount">$0.00</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+ 
+                        </div>
+                        <!-- Columna derecha: Métodos de pago -->
+                        <div class="payment-section">
+                            <h3 style="color:var(--accent-color);margin-bottom:15px;">Método de Pago</h3>
+                            <div style="display:flex;flex-direction:column;gap:10px;">
+                                    <div class="payment-method">
+                                        <input type="radio" id="payment-card" name="payment-method" value="card">
+                                        <label for="payment-card">
+                                            <i class="fas fa-credit-card"></i> Tarjeta de Crédito/Débito
+                                        </label>
+                                        <div class="payment-details card-details" style="display:none;margin-top:10px;">
+                                            <input type="text" placeholder="Número de Tarjeta" class="payment-input">
+                                            <div style="display:flex;gap:10px;margin-top:10px;">
+                                                <input type="text" placeholder="MM/AA" style="width:80px;" class="payment-input">
+                                                <input type="text" placeholder="CVV" style="width:60px;" class="payment-input">
+                                            </div>
+                                        </div>
+                                    </div>
+                                   
+                                    <div class="payment-method">
+                                        <input type="radio" id="payment-transfer" name="payment-method" value="transfer">
+                                        <label for="payment-transfer">
+                                            <i class="fas fa-university"></i> Transferencia Bancaria
+                                        </label>
+                                        <div class="payment-details transfer-details" style="display:none;margin-top:10px;">
+                                            <p>Banco: BBVA</p>
+                                            <p>Cuenta: 0123456789</p>
+                                            <p>CLABE: 012345678901234567</p>
+                                        </div>
+                                    </div>
+                                   
+                                    <div class="payment-method">
+                                        <input type="radio" id="payment-oxxo" name="payment-method" value="oxxo">
+                                        <label for="payment-oxxo">
+                                            <i class="fas fa-store"></i> Pago en OXXO
+                                        </label>
+                                        <div class="payment-details oxxo-details" style="display:none;margin-top:10px;">
+                                            <div id="oxxo-barcode" style="background:#f8f9fa;padding:15px;text-align:center;">
+                                                <p style="margin-bottom:10px;">Código de Barras:</p>
+                                                <img src="barcode-placeholder.png" alt="Código de barras" style="max-width:200px;">
+                                                <p style="margin-top:10px;font-family:monospace;font-size:1.2em;">9876 5432 1098 7654</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                           
+                            <div style="display:flex;justify-content:flex-end;margin-top:20px;gap:8px;">
+    <button class="btn btn-outline" id="generate-payment">Generar Pago</button>
+    <button class="btn btn-primary" id="checkout-btn">Finalizar Compra</button>
+    <button class="btn btn-success" id="generate-invoice-btn">
+        <i class="fas fa-file-invoice"></i> Generar Factura
+    </button>
+</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+ 
+                <script src="script.js"></script>
+                </div>
+            </div>
+        </div>
+    </header>
+ 
+    <main>
+        <section id="home" class="section">
+            <div class="hero">
+                <div class="container">
+                    <h2>Conectando productores agrícolas con compradores en Tamaulipas</h2>
+                    <p>Encuentra productos frescos directamente de los agricultores locales o registra tus productos para llegar a más clientes.</p>
+                    <div class="auth-buttons">
+                        <button class="btn btn-primary" data-section="search">Buscar Productos</button>
+                        <button class="btn btn-outline" data-section="producer">Registrar Productos</button>
+                    </div>
+                </div>
+            </div>
+ 
+            <div class="container">
+                <h2 class="section-title">¿Cómo funciona AgroLink?</h2>
+                <div class="features">
+                    <article class="feature-card">
+                        <div class="feature-icon">🌱</div>
+                        <h3>Para Productores</h3>
+                        <p>Registra tus productos agrícolas, especifica ubicación y métodos de contacto para que los compradores te encuentren fácilmente.</p>
+                    </article>
+                    <article class="feature-card">
+                        <div class="feature-icon">🛒</div>
+                        <h3>Para Compradores</h3>
+                        <p>Encuentra productos frescos directamente de agricultores locales. Filtra por ubicación, tipo de producto y más.</p>
+                    </article>
+                    <article class="feature-card">
+                        <div class="feature-icon">📍</div>
+                        <h3>Ubicación</h3>
+                        <p>Nuestra plataforma te ayuda a encontrar productores cercanos, reduciendo costos de transporte y apoyando la economía local.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+ 
+        <section id="search" class="section hidden">
+            <div class="container">
+                <h2 class="section-title">Encuentra Productos Frescos</h2>
+               
+                <div class="search-section">
+                    <form class="search-form" id="search-form" aria-label="Formulario de búsqueda de productos">
+                        <div class="search-row">
+                            <div class="form-group search-input">
+                                <label for="product-search">¿Qué producto buscas?</label>
+                                <input type="text" id="product-search" placeholder="Ej. Tomate, Maíz, Aguacate...">
+                            </div>
+                            <div class="form-group location-input">
+                                <label for="location">Ubicación</label>
+                                <select id="location">
+                                    <option value="">Toda Tamaulipas</option>
+                                    <option value="ciudad-victoria">Ciudad Victoria</option>
+                                    <option value="reynosa">Reynosa</option>
+                                    <option value="matamoros">Matamoros</option>
+                                    <option value="tampico">Tampico</option>
+                                    <option value="mante">El Mante</option>
+                                    <option value="Guemez">Guemez</option>
+                                    <option value="gonzales">Gonzales</option>
+                                    <option value="gomez farias">Gomez Farias</option>
+                                    <option value="padilla">Padilla</option>
+                                    <option value="jaumave">Jaumave</option>
+                                    <option value="soto la marina">Soto la Marina</option>
+                                    <option value="xicoténcatl">Xicoténcatl</option>
+                                    <option value="altamira">Altamira</option>
+                                    <option value="casas">Casas</option>
+                                </select>
+                            </div>
+                            <div class="form-group category-input">
+                                <label for="category">Categoría</label>
+                                <select id="category">
+                                    <option value="">Todas las categorías</option>
+                                    <option value="frutas">Frutas</option>
+                                    <option value="verduras">Verduras</option>
+                                </select>
+                            </div>
+                            <div class="form-group search-button">
+                                   <label>&nbsp;</label>
+                                <button type="submit" class="btn btn-primary" id="search-btn">
+                                <i class="fas fa-search"></i> Buscar
+                                 </button>
+                          </div>
+                        </div>
+                    </form>
+                </div>
+ 
+                <div class="category-filter" role="group" aria-label="Filtros de categoría">
+                    <button class="category-btn active" data-category="todas">Todas</button>
+                    <button class="category-btn" data-category="frutas">Frutas</button>
+                    <button class="category-btn" data-category="verduras">Verduras</button>
+                </div>
+ 
+                <h3 class="section-title" style="margin-top: 40px;">Productos Disponibles</h3>
+                <div class="products-grid" id="products-container" aria-live="polite">
+                </div>
+            </div>
+        </section>
+ 
+        <section id="producer" class="section hidden">
+            <div class="container">
+                <h2 class="section-title">Panel del Productor</h2>
+               
+                <div class="producer-panel">
+                    <div class="producer-info">
+                        <h3>Información del Productor</h3>
+                        <form class="producer-form" id="producer-info-form" aria-label="Formulario de información del productor">
+                            <div class="form-group">
+                                <label for="producer-name">Nombre del Productor</label>
+                                <input type="text" id="producer-name" placeholder="Tu nombre o nombre de la empresa" required>
+                            </div>
+                           
+                            <div class="form-group">
+                                <label for="producer-email">Correo Electrónico</label>
+                                <input type="email" id="producer-email" placeholder="ejemplo@correo.com" required>
+                            </div>
+                           
+                            <div class="form-group">
+                                <label for="producer-phone">Teléfono de Contacto</label>
+                                <input type="tel" id="producer-phone" placeholder="(834) 123-4567" required>
+                            </div>
+                           
+                            <div class="form-group">
+                                <label for="producer-location">Ubicación</label>
+                                <select id="producer-location" required>
+                                    <option value="">Selecciona tu municipio</option>
+                                    <option value="ciudad-victoria">Ciudad Victoria</option>
+                                    <option value="reynosa">Reynosa</option>
+                                    <option value="matamoros">Matamoros</option>
+                                    <option value="tampico">Tampico</option>
+                                    <option value="El Mante">El Mante</option>
+                                    <option value="Aldama">Aldama</option>
+                                    <option value="Gomez Farias">Gomez Farias</option>
+                                    <option value="Rio Bravo">Rio Bravo</option>
+                                    <option value="San Fernando">San Fernando</option>
+                                </select>
+                            </div>
+                           
+                            <div class="form-group form-full-width">
+                                <label for="producer-address">Dirección Específica (opcional)</label>
+                                <input type="text" id="producer-address" placeholder="Calle, número, colonia...">
+                            </div>
+                           
+                            <div class="form-group form-full-width">
+                                <button type="submit" class="btn btn-primary">Guardar Información</button>
+                            </div>
+                        </form>
+                    </div>
+                   
+                    <div class="product-form-section">
+                        <h3>Agregar Nuevo Producto</h3>
+                        <div class="success-message" id="success-message" aria-live="polite">
+                            ¡Producto agregado exitosamente!
+                        </div>
+                        <form class="producer-form" id="product-form" aria-label="Formulario para agregar nuevo producto">
+                            <div class="form-group">
+                                <label for="product-name">Nombre del Producto</label>
+                                <input type="text" id="product-name" placeholder="Ej. Tomate, Maíz, Aguacate..." required>
+                            </div>
+                           
+                            <div class="form-group">
+                                <label for="product-category">Categoría</label>
+                                <select id="product-category" required>
+                                    <option value="">Selecciona una categoría</option>
+                                    <option value="frutas">Frutas</option>
+                                    <option value="verduras">Verduras</option>
+                                </select>
+                            </div>
+                           
+                            <div class="form-group">
+                                <label for="product-price">Precio por Unidad</label>
+                                <input type="text" id="product-price" placeholder="$00.00" required>
+                            </div>
+                           
+                            <div class="form-group">
+                                <label for="product-unit">Unidad de Medida</label>
+                                <select id="product-unit" required>
+                                    <option value="kg">Kilogramo (kg)</option>
+                                    <option value="g">Gramo (g)</option>
+                                    <option value="lb">Libra (lb)</option>
+                                    <option value="pieza">Pieza</option>
+                                    <option value="caja">Caja</option>
+                                    <option value="saco">Saco</option>
+                                    <option value="tonelada">Tonelada</option>
+                                </select>
+                            </div>
+                           
+                            <div class="form-group form-full-width">
+                                <label for="product-description">Descripción del Producto</label>
+                                <textarea id="product-description" placeholder="Describe tu producto, métodos de cultivo, disponibilidad, etc." required></textarea>
+                            </div>
+                           
+                            <div class="product-actions">
+                                <button type="submit" class="btn btn-primary">Agregar Producto</button>
+                                <button type="button" class="btn btn-secondary" id="clear-product-form">Limpiar Formulario</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+ 
+        <section id="about" class="section hidden">
+            <div class="container">
+                <h2 class="section-title">Acerca de AgroLink Tamaulipas</h2>
+                <div class="producer-section">
+                    <p>AgroLink Tamaulipas es una plataforma diseñada para conectar directamente a los productores agrícolas del estado con compradores locales, incluyendo personas, tiendas, restaurantes y mercados.</p>
+                   
+                    <h3 style="margin: 30px 0 15px;">Nuestra Misión</h3>
+                    <p>Facilitar el acceso a productos agrícolas frescos y de calidad, promoviendo el comercio local y reduciendo los intermediarios en la cadena de suministro.</p>
+                   
+                    <h3 style="margin: 30px 0 15px;">Beneficios</h3>
+                    <ul style="margin-left: 20px; margin-bottom: 20px;">
+                        <li>Para productores: Mayor visibilidad y acceso a nuevos mercados</li>
+                        <li>Para compradores: Productos frescos directamente del campo</li>
+                        <li>Para la comunidad: Fortalecimiento de la economía local y reducción de la huella de carbono</li>
+                    </ul>
+                   
+                    <h3 style="margin: 30px 0 15px;">Contacto</h3>
+                    <p>Para más información, puedes contactarnos en:</p>
+                    <p>Email: info@agrolinktamaulipas.mx</p>
+                    <p>Teléfono: (834) 123-4567</p>
+                </div>
+            </div>
+        </section>
+    </main>
+ 
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>AgroLink Tamaulipas</h3>
+                    <p>Conectando productores y compradores de productos agrícolas frescos en todo Tamaulipas.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Enlaces Rápidos</h3>
+                    <ul>
+                        <li><a href="#" data-section="home">Inicio</a></li>
+                        <li><a href="#" data-section="search">Buscar Productos</a></li>
+                        <li><a href="#" data-section="producer">Soy Productor</a></li>
+                        <li><a href="#" data-section="about">Acerca de</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contacto</h3>
+                    <ul>
+                        <li>Email: info@agrolinktamaulipas.mx</li>
+                        <li>Teléfono: (834) 123-4567</li>
+                        <li>Dirección: Ciudad Victoria, Tamaulipas</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2025 AgroLink Tamaulipas. Todos los derechos reservados.
+            </div>
+        </div>
+    </footer>
+ 
+    <div class="modal" id="register-modal">
+        <div class="modal-content register-modal-content">
+            <div class="modal-header">
+                <div class="header-title">
+                    <h2 class="modal-title">Crear Cuenta</h2>
+                    <button class="close-btn" id="close-register" aria-label="Cerrar modal de registro">×</button>
+                </div>
+            </div>
+            <form class="auth-form" id="register-form" aria-label="Formulario de registro">
+                <div class="register-form-fields">
+                    <div class="form-group">
+                        <label for="register-name">Nombre Completo</label>
+                        <input type="text" id="register-name" placeholder="Tu nombre completo" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-email">Correo Electrónico</label>
+                        <input type="email" id="register-email" placeholder="ejemplo@correo.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-password">Contraseña</label>
+                        <input type="password" id="register-password" placeholder="Mínimo 8 caracteres" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-confirm">Confirmar Contraseña</label>
+                        <input type="password" id="register-confirm" placeholder="Repite tu contraseña" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="user-type">Tipo de Usuario</label>
+                        <select id="user-type" required>
+                            <option value="">Selecciona un tipo</option>
+                            <option value="comprador">Comprador</option>
+                            <option value="productor">Productor</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-outline" id="cancel-register">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" style="background-color: #4CAF50;">Registrarse</button>
+                </div>
+            </form>
+        </div>
+    </div>
+ 
+    <div class="modal" id="login-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Iniciar Sesión</h2>
+                <button class="close-btn" id="close-login" aria-label="Cerrar modal de inicio de sesión">&times;</button>
+            </div>
+            <form class="auth-form" id="login-form" aria-label="Formulario de inicio de sesión">
+                <div class="form-group">
+                    <label for="login-email">Correo Electrónico</label>
+                    <input type="email" id="login-email" placeholder="ejemplo@correo.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Contraseña</label>
+                    <input type="password" id="login-password" placeholder="Tu contraseña" required>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-outline" id="cancel-login">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
