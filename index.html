@@ -6,7 +6,6 @@
     <title>AgroLink Tamaulipas - Conectando productores y compradores</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
- 
 </head>
 <body>
     <header>
@@ -14,148 +13,49 @@
             <div class="header-content">
                 <div class="logo-section">
                     <div class="logo">
-                        <img src="Logo.jpg" alt="AgroLink Tamaulipas">
+                        <span class="registered">®</span>
                         <h1>AgroLink Tamaulipas</h1>
                     </div>
-                    <a href="#" class="inicio-btn" data-section="home">Inicio</a>
                 </div>
                 <nav aria-label="Navegación principal">
                     <ul>
+                        <li><a href="#" data-section="home">Inicio</a></li>
                         <li><a href="#" data-section="search">Buscar Productos</a></li>
                         <li><a href="#" data-section="producer">Soy Productor</a></li>
+                        <li><a href="#" data-section="transport">Soy Transportista</a></li>
+                        <li><a href="#" data-section="premium">Suscripciones</a></li>
                         <li><a href="#" data-section="about">Acerca de</a></li>
                     </ul>
                 </nav>
                 <div class="header-actions">
-                    <button class="btn btn-outline" id="login-btn">Iniciar Sesión</button>
-                    <button class="btn btn-primary" id="register-btn">Registrarse</button>
+                    <div class="user-info" id="user-info" style="display: none;">
+                        <span id="user-name"></span>
+                        <div class="user-rating" id="user-rating"></div>
+                    </div>
+                    <button class="header-btn" id="login-btn">Iniciar Sesión</button>
+                    <button class="header-btn primary" id="register-btn">Registrarse</button>
                     <button class="cart-icon-btn" id="header-cart-btn">
                         <i class="fas fa-shopping-cart"></i>
                         <span class="cart-count" id="cart-count">0</span>
                     </button>
-                <!-- Modal para lista de compra / contactar productor -->
-                <div class="modal" id="cart-modal" aria-hidden="true">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h2 class="modal-title">Lista de Compra</h2>
-                        <button class="close-btn" id="close-cart" aria-label="Cerrar modal de carrito">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <!-- Columna izquierda: Productos -->
-                        <div class="cart-main-content">
-                            <!-- Controles de cantidad -->
-                            <div class="cart-section">
-                                <h3 style="color:var(--accent-color);margin-bottom:12px;">Agregar Producto</h3>                            <div style="display:flex;gap:12px;align-items:center;margin-bottom:20px;background:#f8f9fa;padding:16px;border-radius:8px;">
-                                <label for="cart-quantity" style="min-width:120px;font-weight:500;">Cantidad a solicitar</label>
-                                <input id="cart-quantity" type="number" min="1" value="1">
-                                <select id="cart-unit" style="padding:8px 12px;border-radius:6px;border:1px solid #ddd;flex:1;">
-                                    <option value="kg">Kilogramo (kg)</option>
-                                    <option value="ton">Tonelada</option>
-                                    <option value="saco">Saco</option>
-                                    <option value="lb">Libra (lb)</option>
-                                    <option value="caja">Caja</option>
-                                    <option value="pieza">Pieza</option>
-                                    <option value="g">Gramo (g)</option>
-                                </select>
-                                <button class="btn btn-primary" id="add-to-cart-btn">Agregar a mi lista</button>
-                            </div>
- 
-                            <div class="cart-list-section">
-                                <div class="cart-list-header">
-                                    <h3 style="color:var(--accent-color);">Tu lista de productos</h3>
-                                    <div class="cart-total" id="cart-total"></div>
-                                </div>
-                                <div id="cart-contents"></div>
-                                <div class="cart-actions">
-                                    <button class="btn btn-outline" id="clear-cart">
-                                        <i class="fas fa-trash"></i> Limpiar lista
-                                    </button>
-                                    <div class="cart-total-section">
-                                        <span class="cart-total-label">Total estimado:</span>
-                                        <span class="cart-total-amount" id="cart-total-amount">$0.00</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
- 
-                        </div>
-                        <!-- Columna derecha: Métodos de pago -->
-                        <div class="payment-section">
-                            <h3 style="color:var(--accent-color);margin-bottom:15px;">Método de Pago</h3>
-                            <div style="display:flex;flex-direction:column;gap:10px;">
-                                    <div class="payment-method">
-                                        <input type="radio" id="payment-card" name="payment-method" value="card">
-                                        <label for="payment-card">
-                                            <i class="fas fa-credit-card"></i> Tarjeta de Crédito/Débito
-                                        </label>
-                                        <div class="payment-details card-details" style="display:none;margin-top:10px;">
-                                            <input type="text" placeholder="Número de Tarjeta" class="payment-input">
-                                            <div style="display:flex;gap:10px;margin-top:10px;">
-                                                <input type="text" placeholder="MM/AA" style="width:80px;" class="payment-input">
-                                                <input type="text" placeholder="CVV" style="width:60px;" class="payment-input">
-                                            </div>
-                                        </div>
-                                    </div>
-                                   
-                                    <div class="payment-method">
-                                        <input type="radio" id="payment-transfer" name="payment-method" value="transfer">
-                                        <label for="payment-transfer">
-                                            <i class="fas fa-university"></i> Transferencia Bancaria
-                                        </label>
-                                        <div class="payment-details transfer-details" style="display:none;margin-top:10px;">
-                                            <p>Banco: BBVA</p>
-                                            <p>Cuenta: 0123456789</p>
-                                            <p>CLABE: 012345678901234567</p>
-                                        </div>
-                                    </div>
-                                   
-                                    <div class="payment-method">
-                                        <input type="radio" id="payment-oxxo" name="payment-method" value="oxxo">
-                                        <label for="payment-oxxo">
-                                            <i class="fas fa-store"></i> Pago en OXXO
-                                        </label>
-                                        <div class="payment-details oxxo-details" style="display:none;margin-top:10px;">
-                                            <div id="oxxo-barcode" style="background:#f8f9fa;padding:15px;text-align:center;">
-                                                <p style="margin-bottom:10px;">Código de Barras:</p>
-                                                <img src="barcode-placeholder.png" alt="Código de barras" style="max-width:200px;">
-                                                <p style="margin-top:10px;font-family:monospace;font-size:1.2em;">9876 5432 1098 7654</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                           
-                            <div style="display:flex;justify-content:flex-end;margin-top:20px;gap:8px;">
-    <button class="btn btn-outline" id="generate-payment">Generar Pago</button>
-    <button class="btn btn-primary" id="checkout-btn">Finalizar Compra</button>
-    <button class="btn btn-success" id="generate-invoice-btn">
-        <i class="fas fa-file-invoice"></i> Generar Factura
-    </button>
-</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
- 
-                <script src="script.js"></script>
                 </div>
             </div>
         </div>
     </header>
- 
+
     <main>
         <section id="home" class="section">
             <div class="hero">
                 <div class="container">
                     <h2>Conectando productores agrícolas con compradores en Tamaulipas</h2>
                     <p>Encuentra productos frescos directamente de los agricultores locales o registra tus productos para llegar a más clientes.</p>
-                    <div class="auth-buttons">
-                        <button class="btn btn-primary" data-section="search">Buscar Productos</button>
-                        <button class="btn btn-outline" data-section="producer">Registrar Productos</button>
+                    <div class="hero-buttons">
+                        <button class="hero-btn primary" data-section="search">Buscar Productos</button>
+                        <button class="hero-btn" data-section="producer">Registrar Productos</button>
                     </div>
                 </div>
             </div>
- 
+
             <div class="container">
                 <h2 class="section-title">¿Cómo funciona AgroLink?</h2>
                 <div class="features">
@@ -170,14 +70,14 @@
                         <p>Encuentra productos frescos directamente de agricultores locales. Filtra por ubicación, tipo de producto y más.</p>
                     </article>
                     <article class="feature-card">
-                        <div class="feature-icon">📍</div>
-                        <h3>Ubicación</h3>
-                        <p>Nuestra plataforma te ayuda a encontrar productores cercanos, reduciendo costos de transporte y apoyando la economía local.</p>
+                        <div class="feature-icon">🚚</div>
+                        <h3>Para Transportistas</h3>
+                        <p>Únete a nuestra red de logística colaborativa y genera ingresos adicionales entregando productos locales.</p>
                     </article>
                 </div>
             </div>
         </section>
- 
+
         <section id="search" class="section hidden">
             <div class="container">
                 <h2 class="section-title">Encuentra Productos Frescos</h2>
@@ -218,27 +118,27 @@
                                 </select>
                             </div>
                             <div class="form-group search-button">
-                                   <label>&nbsp;</label>
+                                <label>&nbsp;</label>
                                 <button type="submit" class="btn btn-primary" id="search-btn">
-                                <i class="fas fa-search"></i> Buscar
-                                 </button>
-                          </div>
+                                    <i class="fas fa-search"></i> Buscar
+                                </button>
+                            </div>
                         </div>
                     </form>
                 </div>
- 
+
                 <div class="category-filter" role="group" aria-label="Filtros de categoría">
                     <button class="category-btn active" data-category="todas">Todas</button>
                     <button class="category-btn" data-category="frutas">Frutas</button>
                     <button class="category-btn" data-category="verduras">Verduras</button>
                 </div>
- 
+
                 <h3 class="section-title" style="margin-top: 40px;">Productos Disponibles</h3>
                 <div class="products-grid" id="products-container" aria-live="polite">
                 </div>
             </div>
         </section>
- 
+
         <section id="producer" class="section hidden">
             <div class="container">
                 <h2 class="section-title">Panel del Productor</h2>
@@ -338,10 +238,129 @@
                             </div>
                         </form>
                     </div>
+                    
+                    <div class="orders-section">
+                        <h3>Mis Pedidos</h3>
+                        <div id="producer-orders-container">
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
- 
+        
+        <section id="transport" class="section hidden">
+            <div class="container">
+                <h2 class="section-title">Panel del Transportista</h2>
+               
+                <div class="producer-panel">
+                    <div class="producer-info">
+                        <h3>Información del Transportista</h3>
+                        <form class="producer-form" id="transporter-info-form" aria-label="Formulario de información del transportista">
+                            <div class="form-group">
+                                <label for="transporter-name">Nombre del Transportista</label>
+                                <input type="text" id="transporter-name" placeholder="Tu nombre o nombre de la empresa" required>
+                            </div>
+                           
+                            <div class="form-group">
+                                <label for="transporter-email">Correo Electrónico</label>
+                                <input type="email" id="transporter-email" placeholder="ejemplo@correo.com" required>
+                            </div>
+                           
+                            <div class="form-group">
+                                <label for="transporter-phone">Teléfono de Contacto</label>
+                                <input type="tel" id="transporter-phone" placeholder="(834) 123-4567" required>
+                            </div>
+                           
+                            <div class="form-group">
+                                <label for="transporter-vehicle">Tipo de Vehículo</label>
+                                <select id="transporter-vehicle" required>
+                                    <option value="">Selecciona tu vehículo</option>
+                                    <option value="camioneta">Camioneta</option>
+                                    <option value="camion">Camión</option>
+                                    <option value="motocicleta">Motocicleta</option>
+                                    <option value="van">Van</option>
+                                </select>
+                            </div>
+                           
+                            <div class="form-group">
+                                <label for="transporter-capacity">Capacidad de Carga (kg)</label>
+                                <input type="number" id="transporter-capacity" placeholder="Ej: 500" required>
+                            </div>
+                           
+                            <div class="form-group">
+                                <label for="transporter-zones">Zonas de Cobertura</label>
+                                <select id="transporter-zones" multiple required>
+                                    <option value="ciudad-victoria">Ciudad Victoria</option>
+                                    <option value="reynosa">Reynosa</option>
+                                    <option value="matamoros">Matamoros</option>
+                                    <option value="tampico">Tampico</option>
+                                    <option value="mante">El Mante</option>
+                                </select>
+                                <small>Mantén presionada la tecla Ctrl para seleccionar múltiples zonas</small>
+                            </div>
+                           
+                            <div class="form-group form-full-width">
+                                <button type="submit" class="btn btn-primary">Guardar Información</button>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <div class="transport-orders-section">
+                        <h3>Pedidos Disponibles para Entrega</h3>
+                        <div id="available-orders-container">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="premium" class="section hidden">
+            <div class="container">
+                <h2 class="section-title">Suscripciones Premium</h2>
+               
+                <div class="premium-plans">
+                    <div class="premium-plan">
+                        <h3>Plan Básico</h3>
+                        <div class="plan-price">Gratis</div>
+                        <ul class="plan-features">
+                            <li>Hasta 5 productos listados</li>
+                            <li>Aparecer en búsquedas básicas</li>
+                            <li>Contacto directo con compradores</li>
+                            <li>Soporte por correo electrónico</li>
+                        </ul>
+                        <button class="btn btn-outline" disabled>Plan Actual</button>
+                    </div>
+                    
+                    <div class="premium-plan featured">
+                        <h3>Plan Premium</h3>
+                        <div class="plan-price">$299<span>/mes</span></div>
+                        <ul class="plan-features">
+                            <li>Productos ilimitados</li>
+                            <li>Destacado en búsquedas</li>
+                            <li>Perfil verificado</li>
+                            <li>Estadísticas de visitas</li>
+                            <li>Soporte prioritario</li>
+                            <li>Reducción de comisiones al 2%</li>
+                        </ul>
+                        <button class="btn btn-primary">Seleccionar Plan</button>
+                    </div>
+                    
+                    <div class="premium-plan">
+                        <h3>Plan Empresarial</h3>
+                        <div class="plan-price">$599<span>/mes</span></div>
+                        <ul class="plan-features">
+                            <li>Todos los beneficios Premium</li>
+                            <li>Publicidad destacada en homepage</li>
+                            <li>Análisis de mercado avanzado</li>
+                            <li>Asesoría personalizada</li>
+                            <li>Comisiones al 1%</li>
+                        </ul>
+                        <button class="btn btn-outline">Seleccionar Plan</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section id="about" class="section hidden">
             <div class="container">
                 <h2 class="section-title">Acerca de AgroLink Tamaulipas</h2>
@@ -366,7 +385,7 @@
             </div>
         </section>
     </main>
- 
+
     <footer>
         <div class="container">
             <div class="footer-content">
@@ -380,6 +399,8 @@
                         <li><a href="#" data-section="home">Inicio</a></li>
                         <li><a href="#" data-section="search">Buscar Productos</a></li>
                         <li><a href="#" data-section="producer">Soy Productor</a></li>
+                        <li><a href="#" data-section="transport">Soy Transportista</a></li>
+                        <li><a href="#" data-section="premium">Suscripciones</a></li>
                         <li><a href="#" data-section="about">Acerca de</a></li>
                     </ul>
                 </div>
@@ -397,7 +418,178 @@
             </div>
         </div>
     </footer>
- 
+
+    <!-- Modal para lista de compra / contactar productor -->
+    <div class="modal" id="cart-modal" aria-hidden="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Lista de Compra</h2>
+                <button class="close-btn" id="close-cart" aria-label="Cerrar modal de carrito">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="cart-main-content">
+                    <div class="cart-section">
+                        <h3 style="color:var(--accent-color);margin-bottom:12px;">Agregar Producto</h3>
+                        <div style="display:flex;gap:12px;align-items:center;margin-bottom:20px;background:#f8f9fa;padding:16px;border-radius:8px;">
+                            <label for="cart-quantity" style="min-width:120px;font-weight:500;">Cantidad a solicitar</label>
+                            <input id="cart-quantity" type="number" min="1" value="1">
+                            <select id="cart-unit" style="padding:8px 12px;border-radius:6px;border:1px solid #ddd;flex:1;">
+                                <option value="kg">Kilogramo (kg)</option>
+                                <option value="ton">Tonelada</option>
+                                <option value="saco">Saco</option>
+                                <option value="lb">Libra (lb)</option>
+                                <option value="caja">Caja</option>
+                                <option value="pieza">Pieza</option>
+                                <option value="g">Gramo (g)</option>
+                            </select>
+                            <button class="btn btn-primary" id="add-to-cart-btn">Agregar a mi lista</button>
+                        </div>
+
+                        <div class="cart-list-section">
+                            <div class="cart-list-header">
+                                <h3 style="color:var(--accent-color);">Tu lista de productos</h3>
+                                <div class="cart-total" id="cart-total"></div>
+                            </div>
+                            <div id="cart-contents"></div>
+                            <div class="cart-actions">
+                                <button class="btn btn-outline" id="clear-cart">
+                                    <i class="fas fa-trash"></i> Limpiar lista
+                                </button>
+                                <div class="cart-total-section">
+                                    <span class="cart-total-label">Total estimado:</span>
+                                    <span class="cart-total-amount" id="cart-total-amount">$0.00</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="payment-section">
+                    <h3 style="color:var(--accent-color);margin-bottom:15px;">Método de Pago</h3>
+                    <div style="display:flex;flex-direction:column;gap:10px;">
+                        <div class="payment-method">
+                            <input type="radio" id="payment-card" name="payment-method" value="card">
+                            <label for="payment-card">
+                                <i class="fas fa-credit-card"></i> Tarjeta de Crédito/Débito
+                            </label>
+                            <div class="payment-details card-details" style="display:none;margin-top:10px;">
+                                <input type="text" placeholder="Número de Tarjeta" class="payment-input">
+                                <div style="display:flex;gap:10px;margin-top:10px;">
+                                    <input type="text" placeholder="MM/AA" style="width:80px;" class="payment-input">
+                                    <input type="text" placeholder="CVV" style="width:60px;" class="payment-input">
+                                </div>
+                            </div>
+                        </div>
+                       
+                        <div class="payment-method">
+                            <input type="radio" id="payment-transfer" name="payment-method" value="transfer">
+                            <label for="payment-transfer">
+                                <i class="fas fa-university"></i> Transferencia Bancaria
+                            </label>
+                            <div class="payment-details transfer-details" style="display:none;margin-top:10px;">
+                                <p>Banco: BBVA</p>
+                                <p>Cuenta: 0123456789</p>
+                                <p>CLABE: 012345678901234567</p>
+                            </div>
+                        </div>
+                       
+                        <div class="payment-method">
+                            <input type="radio" id="payment-oxxo" name="payment-method" value="oxxo">
+                            <label for="payment-oxxo">
+                                <i class="fas fa-store"></i> Pago en OXXO
+                            </label>
+                            <div class="payment-details oxxo-details" style="display:none;margin-top:10px;">
+                                <div id="oxxo-barcode" style="background:#f8f9fa;padding:15px;text-align:center;">
+                                    <p style="margin-bottom:10px;">Código de Barras:</p>
+                                    <img src="barcode-placeholder.png" alt="Código de barras" style="max-width:200px;">
+                                    <p style="margin-top:10px;font-family:monospace;font-size:1.2em;">9876 5432 1098 7654</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="logistics-section" style="margin-top: 20px;">
+                        <h3 style="color:var(--accent-color);margin-bottom:15px;">Opción de Entrega</h3>
+                        <div style="display:flex;flex-direction:column;gap:10px;">
+                            <div class="delivery-option">
+                                <input type="radio" id="delivery-pickup" name="delivery-method" value="pickup" checked>
+                                <label for="delivery-pickup">
+                                    <i class="fas fa-store"></i> Recoger en punto de venta
+                                </label>
+                            </div>
+                            <div class="delivery-option">
+                                <input type="radio" id="delivery-transport" name="delivery-method" value="transport">
+                                <label for="delivery-transport">
+                                    <i class="fas fa-truck"></i> Entrega a domicilio con transportista
+                                </label>
+                                <div class="transport-details" style="display:none;margin-top:10px;">
+                                    <label for="transporter-select">Seleccionar transportista:</label>
+                                    <select id="transporter-select" class="payment-input">
+                                    </select>
+                                    <div id="transporter-info" style="margin-top:10px;padding:10px;background:#f8f9fa;border-radius:6px;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                   
+                    <div style="display:flex;justify-content:flex-end;margin-top:20px;gap:8px;">
+                        <button class="btn btn-outline" id="generate-payment">Generar Pago</button>
+                        <button class="btn btn-primary" id="checkout-btn">Finalizar Compra</button>
+                        <button class="btn btn-success" id="generate-invoice-btn">
+                            <i class="fas fa-file-invoice"></i> Generar Factura
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para pedidos seguros -->
+    <div class="modal" id="secure-order-modal" aria-hidden="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Confirmar Pedido Seguro</h2>
+                <button class="close-btn" id="close-secure-order" aria-label="Cerrar modal de pedido seguro">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="secure-order-details">
+                </div>
+                <div class="secure-order-actions" style="display:flex;justify-content:flex-end;margin-top:20px;gap:8px;">
+                    <button class="btn btn-outline" id="cancel-secure-order">Cancelar</button>
+                    <button class="btn btn-primary" id="confirm-secure-order">Confirmar Pedido</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para calificar pedido -->
+    <div class="modal" id="rating-modal" aria-hidden="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Calificar Pedido</h2>
+                <button class="close-btn" id="close-rating" aria-label="Cerrar modal de calificación">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="rating-details">
+                    <p>¿Cómo calificarías tu experiencia con este pedido?</p>
+                    <div class="rating-stars">
+                        <i class="far fa-star" data-rating="1"></i>
+                        <i class="far fa-star" data-rating="2"></i>
+                        <i class="far fa-star" data-rating="3"></i>
+                        <i class="far fa-star" data-rating="4"></i>
+                        <i class="far fa-star" data-rating="5"></i>
+                    </div>
+                    <textarea id="rating-comment" placeholder="Comentarios adicionales (opcional)" style="width:100%;margin-top:15px;padding:10px;border-radius:6px;border:1px solid #ddd;"></textarea>
+                </div>
+                <div class="rating-actions" style="display:flex;justify-content:flex-end;margin-top:20px;gap:8px;">
+                    <button class="btn btn-outline" id="cancel-rating">Cancelar</button>
+                    <button class="btn btn-primary" id="submit-rating">Enviar Calificación</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="modal" id="register-modal">
         <div class="modal-content register-modal-content">
             <div class="modal-header">
@@ -430,6 +622,7 @@
                             <option value="">Selecciona un tipo</option>
                             <option value="comprador">Comprador</option>
                             <option value="productor">Productor</option>
+                            <option value="transportista">Transportista</option>
                         </select>
                     </div>
                 </div>
@@ -440,7 +633,7 @@
             </form>
         </div>
     </div>
- 
+
     <div class="modal" id="login-modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -463,6 +656,18 @@
             </form>
         </div>
     </div>
+    
+    <div class="modal" id="factura-modal">
+        <div class="modal-content factura-modal-content">
+            <div class="modal-header">
+                <h2>Generar Factura</h2>
+                <button class="close-btn" onclick="cerrarFactura()">&times;</button>
+            </div>
+            <div class="modal-body" id="factura-content">
+            </div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
